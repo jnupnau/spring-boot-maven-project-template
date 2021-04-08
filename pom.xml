@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.4.4</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <groupId>de.colenet.templates</groupId>
+  <artifactId>spring-boot-maven-project-template</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>spring-boot-maven-project-template</name>
+  <description>Demo spring boot maven project, which can be used as template for other projects</description>
+
+  <properties>
+    <java.version>11</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- dependencies versions -->
+
+    <!-- plugins versions -->
+    <!-- https://mvnrepository.com/artifact/com.diffplug.spotless/spotless-maven-plugin -->
+    <spotless.maven-plugin.version>2.9.0</spotless.maven-plugin.version>
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+    <pmd.maven-plugin.version>3.14.0</pmd.maven-plugin.version>
+    <!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
+    <spotbugs.maven-plugin.version>4.2.2</spotbugs.maven-plugin.version>
+    <!-- https://mvnrepository.com/artifact/de.thetaphi/forbiddenapis -->
+    <forbiddenapis.maven-plugin.version>3.1</forbiddenapis.maven-plugin.version>
+    <!-- https://mvnrepository.com/artifact/com.h3xstream.findsecbugs/findsecbugs-plugin -->
+    <findsecbugs.spotbugs-plugin.version>1.11.0</findsecbugs.spotbugs-plugin.version>
+    <!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven -->
+    <dependency-check.maven-plugin.version>6.1.5</dependency-check.maven-plugin.version>
+    <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+    <jacoco.maven-plugin.version>0.8.6</jacoco.maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <!-- build dependencies -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+    <!-- runtime only dependencies -->
+
+    <!-- optional dependencies -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- optional runtime only dependencies -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Provide executable jar for application -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <!-- consistent code formatting  https://github.com/diffplug/spotless -->
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.maven-plugin.version}</version>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <!-- https://github.com/google/google-java-format -->
+              <version>1.10.0</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- https://pmd.github.io/latest/index.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.maven-plugin.version}</version>
+        <configuration>
+          <failOnViolation>true</failOnViolation>
+          <printFailingErrors>true</printFailingErrors>
+          <rulesets>
+            <!-- https://pmd.github.io/latest/pmd_rules_java.html -->
+            <ruleset>/rulesets/java/quickstart.xml</ruleset>
+          </rulesets>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Check for common bugs and issues https://spotbugs.github.io/ -->
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.maven-plugin.version}</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Medium</threshold>
+          <failOnError>true</failOnError>
+          <plugins>
+            <plugin>
+              <!-- https://find-sec-bugs.github.io/ -->
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>${findsecbugs.spotbugs-plugin.version}</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Fail build if specific discouraged classes or methods are used https://github.com/policeman-tools/forbidden-apis -->
+        <groupId>de.thetaphi</groupId>
+        <artifactId>forbiddenapis</artifactId>
+        <version>${forbiddenapis.maven-plugin.version}</version>
+        <configuration>
+          <!-- if the used Java version is too new, don't fail, just do nothing -->
+          <failOnUnsupportedJava>false</failOnUnsupportedJava>
+          <bundledSignatures>
+            <!-- This will automatically choose the right signatures based on 'maven.compiler.target' -->
+            <bundledSignature>jdk-unsafe</bundledSignature>
+            <bundledSignature>jdk-deprecated</bundledSignature>
+            <bundledSignature>jdk-internal</bundledSignature>
+            <bundledSignature>jdk-non-portable</bundledSignature>
+            <bundledSignature>jdk-system-out</bundledSignature>
+            <bundledSignature>jdk-reflection</bundledSignature>
+          </bundledSignatures>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>testCheck</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Check dependencies for known vulnerabilities https://owasp.org/www-project-dependency-check/ -->
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>${dependency-check.maven-plugin.version}</version>
+        <configuration>
+          <failBuildOnCVSS>5</failBuildOnCVSS>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- analyze code coverage https://www.eclemma.org/jacoco/trunk/doc/maven.html -->
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
