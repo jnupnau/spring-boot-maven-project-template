@@ -15,6 +15,13 @@
   <name>spring-boot-maven-project-template</name>
   <description>Demo spring boot maven project, which can be used as template for other projects</description>
 
+  <scm>
+    <connection>scm:git:git@github.com:jnupnau/spring-boot-maven-project-template.git</connection>
+    <developerConnection>scm:git:git@github.com:jnupnau/spring-boot-maven-project-template.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/jnupnau/spring-boot-maven-project-template</url>
+  </scm>
+
   <properties>
     <java.version>11</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
